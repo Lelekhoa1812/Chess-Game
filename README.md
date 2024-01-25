@@ -12,12 +12,16 @@ Once downloaded, you may have found that your code is stored at a different loca
 For instance, BQ = pygame.image.load('Downloads/Chess game python/Chess_Pieces/bq.png'), replace those in the bracket as your own path.
 
 Chess pieces abbreviative form:
-color:             pieces:
-B = black          P = pawn
-W = white          R = rook
-                   N = knight
-                   B = bishop
-                   Q = queen
-                   K = king
+color:             
+B = black          
+W = white
+
+pieces:
+P = pawn
+R = rook
+N = knight
+B = bishop
+Q = queen
+K = king
                    
 Sourced by LeMaster Tech, ogriginal content can be found via https://www.youtube.com/channel/UCV5Ab39YnXvTZ6Grar9URxQ.
