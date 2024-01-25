@@ -13,8 +13,7 @@ For instance, BQ = pygame.image.load('Downloads/Chess game python/Chess_Pieces/b
 
 Chess pieces abbreviative form:
 color:             
-B = black          
-W = white
+B = black          W = white
 
 pieces:
 P = pawn
