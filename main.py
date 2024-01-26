@@ -1,8 +1,6 @@
-# two player chess in python with Pygame!
-# part one, set up variables images and game loop
-
 import pygame
 import os 
+import random
 
 pygame.init()
 WIDTH = 1000
@@ -14,6 +12,8 @@ medium_font = pygame.font.Font('freesansbold.ttf', 40)
 big_font = pygame.font.Font('freesansbold.ttf', 50)
 timer = pygame.time.Clock()
 fps = 60
+print("Press [SPACE] to change among the game colorway (6 color combinations in total).")
+
 # game variables and images
 white_pieces = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
                 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn']
@@ -25,7 +25,7 @@ black_locations = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7
                    (0, 6), (1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6), (7, 6)]
 captured_pieces_white = []
 captured_pieces_black = []
-# 0 - whites turn no selection: 1-whites turn piece selected: 2- black turn no selection, 3 - black turn piece selected
+
 turn_step = 0
 selection = 100
 valid_moves = []
@@ -79,6 +79,17 @@ counter = 0
 winner = ''
 game_over = False
 
+# Configure the game's 6 colorways
+colorways = [
+    ((139, 69, 19), (204, 192, 149)),  # Brown / Sand
+    ((255, 182, 193), (100, 149, 237)),  # Pink / Cornflower blue
+    ((128, 0, 128), (255, 165, 0)),  # Purple / Orange
+    ((0, 100, 0), (173, 216, 230)),  # Green / Light blue
+    ((0, 0, 128), (128, 0, 32)),  # Blue / Burgundy
+    ((255, 127, 80), (0, 139, 139))  # Coral / Dark cyan
+]
+current_colorway_index = 0
+current_colorway = colorways[current_colorway_index]
 
 # draw main game board
 def draw_board():
@@ -86,19 +97,19 @@ def draw_board():
         column = i % 4
         row = i // 4
         if row % 2 == 0:
-            pygame.draw.rect(screen, 'light gray', [600 - (column * 200), row * 100, 100, 100])
+            pygame.draw.rect(screen, current_colorway[0], [600 - (column * 200), row * 100, 100, 100])
         else:
-            pygame.draw.rect(screen, 'light gray', [700 - (column * 200), row * 100, 100, 100])
-        pygame.draw.rect(screen, 'gray', [0, 800, WIDTH, 100])
-        pygame.draw.rect(screen, 'gold', [0, 800, WIDTH, 100], 5)
-        pygame.draw.rect(screen, 'gold', [800, 0, 200, HEIGHT], 5)
+            pygame.draw.rect(screen, current_colorway[0], [700 - (column * 200), row * 100, 100, 100])
+        pygame.draw.rect(screen, current_colorway[1], [0, 800, WIDTH, 100])   # Sand color to the background
+        pygame.draw.rect(screen, (101, 67, 33), [0, 800, WIDTH, 100], 5)  # Dark brown color lining bottom panel
+        pygame.draw.rect(screen, (101, 67, 33), [800, 0, 200, HEIGHT], 5)  # Dark brown color lining right panel
         status_text = ['White: Select a Piece to Move!', 'White: Select a Destination!',
                        'Black: Select a Piece to Move!', 'Black: Select a Destination!']
         screen.blit(big_font.render(status_text[turn_step], True, 'black'), (20, 820))
         for i in range(9):
             pygame.draw.line(screen, 'black', (0, 100 * i), (800, 100 * i), 2)
             pygame.draw.line(screen, 'black', (100 * i, 0), (100 * i, 800), 2)
-        screen.blit(medium_font.render('FORFEIT', True, 'black'), (810, 830))
+        screen.blit(medium_font.render('QUIT', True, 'black'), (830, 830))
 
 
 # draw pieces onto board
@@ -111,7 +122,7 @@ def draw_pieces():
             screen.blit(white_images[index], (white_locations[i][0] * 100 + 10, white_locations[i][1] * 100 + 10))
         if turn_step < 2:
             if selection == i:
-                pygame.draw.rect(screen, 'red', [white_locations[i][0] * 100 + 1, white_locations[i][1] * 100 + 1,
+                pygame.draw.rect(screen, 'dark gray', [white_locations[i][0] * 100 + 1, white_locations[i][1] * 100 + 1,
                                                  100, 100], 2)
 
     for i in range(len(black_pieces)):
@@ -122,8 +133,8 @@ def draw_pieces():
             screen.blit(black_images[index], (black_locations[i][0] * 100 + 10, black_locations[i][1] * 100 + 10))
         if turn_step >= 2:
             if selection == i:
-                pygame.draw.rect(screen, 'blue', [black_locations[i][0] * 100 + 1, black_locations[i][1] * 100 + 1,
-                                                  100, 100], 2)
+                pygame.draw.rect(screen, (40, 40, 40), [black_locations[i][0] * 100 + 1, black_locations[i][1] * 100 + 1,
+                                                  100, 100], 2) # using darker 'dark gray'
 
 
 # function to check all pieces valid options on board
@@ -307,9 +318,9 @@ def check_valid_moves():
 # draw valid moves on screen
 def draw_valid(moves):
     if turn_step < 2:
-        color = 'red'
+        color = 'dark gray'
     else:
-        color = 'blue'
+        color = (40, 40, 40) # darker 'dark gray'
     for i in range(len(moves)):
         pygame.draw.circle(screen, color, (moves[i][0] * 100 + 50, moves[i][1] * 100 + 50), 5)
 
@@ -364,7 +375,7 @@ while run:
         counter += 1
     else:
         counter = 0
-    screen.fill('dark gray')
+    screen.fill(current_colorway[1])
     draw_board()
     draw_pieces()
     draw_captured()
@@ -422,6 +433,14 @@ while run:
                     turn_step = 0
                     selection = 100
                     valid_moves = []
+        # Change the colorway of the game board
+        if event.type == pygame.KEYDOWN and not game_over:
+            if event.key == pygame.K_SPACE:
+                # Switch to the next colorway
+                current_colorway_index = (current_colorway_index + 1) % len(colorways)
+                current_colorway = colorways[current_colorway_index]
+                print(f"Colorway changed to {current_colorway_index + 1}")
+        # Refresh end game
         if event.type == pygame.KEYDOWN and game_over:
             if event.key == pygame.K_RETURN:
                 game_over = False
