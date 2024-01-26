@@ -22,5 +22,13 @@ N = knight
 B = bishop
 Q = queen
 K = king
-                   
+
+Update: you can change the game board's colorways by pressing the [SPACE] key, there are 6 colors combination in total:
+1. Brown / Sand (default)
+2. Pink / Cornflower blue
+3. Purple / Orange
+4. Green / Light blue
+5. Blue / Burgundy
+6. Coral / Dark cyan.
+
 Sourced by LeMaster Tech, ogriginal content can be found via https://www.youtube.com/channel/UCV5Ab39YnXvTZ6Grar9URxQ.
